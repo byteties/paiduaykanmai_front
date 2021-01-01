@@ -62,6 +62,11 @@ export default function Home() {
               <p>ที่อยู่ : {shop.address}</p>
             </a></Link>))
           }
+          <Link href={`/snacks`}>
+            <a className={styles.card}>
+              <h3>ขนมทั้งหมด &rarr;</h3>
+            </a>
+          </Link>
         </div>
       </main>
 
