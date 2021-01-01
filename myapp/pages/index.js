@@ -44,7 +44,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          <a>Welcome to the shop!!!</a>
+          <a>Welcome to Shop Management</a>
         </h1>
 
         <p className={styles.description}>
