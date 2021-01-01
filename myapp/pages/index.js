@@ -1,64 +1,77 @@
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import axios from 'axios'
+import Link from 'next/link'
+import {SERVICE_URL} from '../config'
+import { Button } from 'antd'
+import 'antd/dist/antd.css';
+import ShopModal from '../components/ShopModal'
 
 export default function Home() {
+  const [data, setData] = useState([])
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isReload,setIsReload] = useState(false)
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = (data) => {
+    axios.post(`${SERVICE_URL}/shop`,data).then((res)=>{
+      console.info('Create successfully!!!')
+      setIsReload(!isReload)
+    })
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  useEffect(() => {
+    axios.get(`${SERVICE_URL}/shops`).then((result)=>{
+    setData(result.data)
+  })
+  }, [isReload])
+  
+  if (!data) return <div>Loading...</div>
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>paiduaykanmai shop</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          <a>Welcome to the shop!!!</a>
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
+          ร้านค้าขนมและเครื่องดื่ม
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          {
+            data.map((shop)=>( 
+              <Link href={`/shop/${shop._id}`}>
+            <a className={styles.card}>
+              <h3>{shop.name} &rarr;</h3>
+              <p>{shop.description}</p>
+              <p>เบอร์ติดต่อ : {shop.tel}</p>
+              <p>ที่อยู่ : {shop.address}</p>
+            </a></Link>))
+          }
         </div>
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
+        <Button type="primary" onClick={showModal}><a>เพิ่มร้านค้า</a></Button>
+        <ShopModal 
+        title="เพิ่มร้านค้าใหม่"
+        isModalVisible={isModalVisible} 
+        handleOk={handleOk} 
+        handleCancel={handleCancel}/>
       </footer>
     </div>
   )

@@ -5,6 +5,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color:whitesmoke;
+  /* background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("https://www.linkpicture.com/q/495181efe75ba1b53361f3d5779a6e9a299898a0.jpg"); */
 }
 
 .main {
@@ -36,7 +40,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color:navy;
   text-decoration: none;
 }
 
@@ -90,6 +94,8 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
+  min-width: 250px;
+  background-color: white;
 }
 
 .card:hover,
@@ -112,6 +118,12 @@
 
 .logo {
   height: 1em;
+}
+
+.child {
+  list-style: none;
+  min-width: 80px;
+  padding: 10px 0;
 }
 
 @media (max-width: 600px) {
