@@ -4,12 +4,11 @@ import styles from '../../styles/Home.module.css'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import {SERVICE_URL} from '../../config'
-import { Button,Modal,Card } from 'antd'
+import { Button,Modal } from 'antd'
 import ShopModal from '../../components/ShopModal'
 import 'antd/dist/antd.css';
 import SnackModal from '../../components/SnackModal'
 import { PlusOutlined } from '@ant-design/icons';
-import Link from 'next/link'
 
 export default function Shop() {  
   const [snacks, setSnacks] = useState([])
@@ -22,6 +21,8 @@ export default function Shop() {
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [isSnackModalVisible, setIsSnackModalVisible] = useState(false);
   const [isReload,setIsReload] = useState(false)
+  const [isEditSnack,setIsEditSnack] = useState(false)
+  const [snackTitle,setSnackTitle] = useState('')
 
   useEffect(() => {
     axios.get(`${SERVICE_URL}/snacks?shopID=${id}`).then((result)=>{
@@ -39,8 +40,18 @@ export default function Shop() {
     setIsShopModalVisible(true);
   };
 
-  const showSnackModal = () => {
+  const showAddSnackModal = () => {
+    setSnackTitle("เพิ่มข้อมูลสินค้า")
+    setIsEditSnack(false)
     setIsSnackModalVisible(true);
+    setSnack({})
+  };
+
+  const showEditSnackModal = (data) => {
+    setSnackTitle("แก้ไขข้อมูลสินค้า")
+    setIsEditSnack(true)
+    setIsSnackModalVisible(true);
+    setSnack(data)
   };
 
   const shopOk = (data) => {
@@ -56,10 +67,18 @@ export default function Shop() {
   };
 
   const snackOk = (data) => {
-    axios.post(`${SERVICE_URL}/snack`,{...data,shopID:id,categoryID:1}).then((res)=>{
-      console.info('Create successfully!!!')
-      setIsReload(!isReload)
-    })
+    if(isEditSnack){
+      axios.put(`${SERVICE_URL}/snack/${data._id}`,{...data,shopID:id}).then((res)=>{
+        console.info('Update successfully!!!')
+        setIsReload(!isReload)
+      })
+    } else {
+      axios.post(`${SERVICE_URL}/snack`,{...data,shopID:id}).then((res)=>{
+        console.info('Create successfully!!!')
+        setIsReload(!isReload)
+      })
+    }
+    setSnack({})
     setIsSnackModalVisible(false);
   };
 
@@ -77,6 +96,7 @@ export default function Shop() {
         axios.delete(`${SERVICE_URL}/snack/${id}`).then((result)=>{
           console.info('Create successfully!!!')
           setIsReload(!isReload)
+          setSnack({})
         })
       },
     });
@@ -113,7 +133,7 @@ export default function Shop() {
               <p>{snack.description}</p>
               <p>ราคา : {snack.price}</p>
               <p>หน่วยสินค้า : {snack.unit}</p>
-              <Button type="primary" onClick={()=>setSnack(snack)}>
+              <Button type="primary" onClick={()=>showEditSnackModal(snack)}>
               แก้ไข
               </Button>
               <Button type="primary" danger onClick={()=>confirm(snack.name,snack._id)}>
@@ -124,7 +144,7 @@ export default function Shop() {
         </div>
         <Button
           type="dashed"
-          onClick={showSnackModal}
+          onClick={showAddSnackModal}
           style={{ marginTop: '20px' }}
           icon={<PlusOutlined />}
         >
@@ -142,12 +162,14 @@ export default function Shop() {
         data={shop}/>
 
         <SnackModal 
-          title="เพิ่มข้อมูลสินค้า"
+          title={snackTitle}
           isModalVisible={isSnackModalVisible} 
           handleOk={snackOk} 
           handleCancel={snackCancel}
           categorys={categorys}
-          data={snack}/>
+          data={snack}
+          isEdit={isEditSnack}
+          />
       </footer>
     </div>
   )
