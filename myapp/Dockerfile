@@ -1,21 +1,8 @@
 FROM node:12
 
-ENV PORT 3000
+WORKDIR /app
+COPY . .
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN npm install
 
-# Installing dependencies
-COPY package*.json /usr/src/app/
-RUN npm install && npm cache clean --force --loglevel=error
-
-# Copying source files
-COPY . /usr/src/app
-
-# Building app
-RUN npm run build
-EXPOSE 3000
-
-# Running the app
-CMD ["npm" "run" "dev"]
+CMD ["npm", "run", "dev"]
