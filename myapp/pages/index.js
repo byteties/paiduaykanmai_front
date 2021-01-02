@@ -64,7 +64,7 @@ export default function Home() {
           }
           <Link href={`/snacks`}>
             <a className={styles.card}>
-              <h3>ขนมทั้งหมด &rarr;</h3>
+              <h3>สินค้าทั้งหมด &rarr;</h3>
             </a>
           </Link>
         </div>
