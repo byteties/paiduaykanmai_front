@@ -127,7 +127,7 @@ const SnackModal = ({
         <Input onChange={onChangeDes} value={(isEdit && !isTypeDes)?defaultValueDes:des} placeholder="รายละเอียดสินค้า" />
         <InputNumber
           style={{width:'auto'}}
-          formatter={value => `$ ${value}`}
+          formatter={value => `${value} บาท`}
          onChange={onChangePrice} 
          value={(isEdit && !isTypePrice)?defaultValuePrice:price} 
          placeholder="ราคา" />
