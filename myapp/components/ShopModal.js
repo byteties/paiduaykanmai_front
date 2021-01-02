@@ -43,8 +43,8 @@ const ShopModal = ({
       onOk={()=> handleOk({name,description:des,tel,address})} 
       onCancel={handleCancel}>
         <Input onChange={onChangeName}  defaultValue={defaultValueName} placeholder="ชื่อร้าน"/>
-        <Input onChange={onChangeDes}  defaultValue={defaultValueDes} placeholder="คำอภิบายร้าน" />
-        <Input onChange={onChangeTel}  defaultValue={defaultValueTel} placeholder="เบอนร์ติดต่อ" />
+        <Input onChange={onChangeDes}  defaultValue={defaultValueDes} placeholder="คำอธิบายร้านค้า" />
+        <Input onChange={onChangeTel}  defaultValue={defaultValueTel} placeholder="เบอร์ติดต่อ" />
         <Input onChange={onChangeAddress}  defaultValue={defaultValueAddress} placeholder="ที่อยู่" />
       </Modal>
   );

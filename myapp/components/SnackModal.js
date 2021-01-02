@@ -126,7 +126,8 @@ const SnackModal = ({
         <Input onChange={onChangeName} value={(isEdit && !isTypeName)?defaultValueName:name} placeholder="ชื่อสินค้า"/>
         <Input onChange={onChangeDes} value={(isEdit && !isTypeDes)?defaultValueDes:des} placeholder="รายละเอียดสินค้า" />
         <InputNumber
-        formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          style={{width:'auto'}}
+          formatter={value => `$ ${value}`}
          onChange={onChangePrice} 
          value={(isEdit && !isTypePrice)?defaultValuePrice:price} 
          placeholder="ราคา" />
